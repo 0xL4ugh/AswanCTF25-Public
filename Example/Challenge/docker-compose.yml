@@ -1,0 +1,32 @@
+services:
+  hello:
+    build: hello
+    image: idekctf:Hello
+    ports:
+      - 1337:80
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail http://127.0.0.1"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    cpus: "1"
+    mem_limit: "2048M"
+
+  ctfbot:
+    build: ctfbot
+    image: idekctf:ctfbot
+    environment:
+      FLAG: idek{tesst_flag_don't_submit_it}
+      DOMAIN: hello  # different in production (challenge ip)
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail  http://127.0.0.1:3000"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    cpus: "1"
+    mem_limit: "2048M"
+    
+
+

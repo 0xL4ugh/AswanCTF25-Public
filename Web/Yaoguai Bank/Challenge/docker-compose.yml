@@ -1,0 +1,53 @@
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: yaobank
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./yaobank.sql:/docker-entrypoint-initdb.d/yaobank.sql
+    networks:
+      - backend
+
+  php-backend:
+    build:
+      context: ./src
+    environment:
+      dbusername: root
+      dbpassword: root
+      dbname: yaobank
+      dbport: 3306
+      dbhost: mysql
+    depends_on:
+      - mysql
+      - internal-services
+    ports:
+      - "1280:80"
+    networks:
+      - backend
+
+  internal-services:
+    build:
+      context: ./Internal-Services
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=yaobank
+      - MYSQL_PORT=3306
+    expose:
+      - "5000"
+    networks:
+      - backend
+
+volumes:
+  mysql-data:
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .register-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 24px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    label {
+      text-align: left;
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    input[type="email"],
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .error-message {
+      color: red;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="register-container">
+  <h2>Register for Yaobank</h2>
+  <form id="registrationForm">
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <input type="submit" value="Register">
+    </div>
+  </form>
+  <div id="registrationStatus" class="error-message"></div>
+
+  <div class="footer">
+    <p>&copy; 2025 Yaobank</p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('registrationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Get the form data
+    const email = document.getElementById('email').value;
+    const name = document.getElementById('name').value;
+    const password = document.getElementById('password').value;
+
+    // Create a JSON object
+    const data = {
+      email: email,
+      name: name,
+      password: password
+    };
+
+    // Send a POST request with the JSON data
+    fetch('../api/register.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        return "Registration successful, Redirect in 2 seconds";
+      } else {
+        return response.json().then(errorData => {
+          throw new Error(errorData.Msg);
+        });
+      }
+    })
+    .then(data => {
+      document.getElementById('registrationStatus').textContent = 'Registration successful, Redirect in 2 seconds';
+      
+      // Redirect to login page after 3 seconds
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);  // 3 seconds delay
+    })
+    .catch(error => {
+      document.getElementById('registrationStatus').textContent = 'Registration failed: ' + error.message;
+    });
+  });
+</script>
+
+</body>
+</html>

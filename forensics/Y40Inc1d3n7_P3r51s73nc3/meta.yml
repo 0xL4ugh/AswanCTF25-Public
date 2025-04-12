@@ -1,0 +1,4 @@
+name: Y40Inc1d3n7_P3r51s73nc3
+author: 0xS1rx58
+flag: YAO{PHP-CG1_15_@_S3rRV1c3...?!}
+description: "After the attacker gained initial access and successfully performed\nprivilege escalation, they created a persistence mechanism to maintain access to the system."

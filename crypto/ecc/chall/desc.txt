@@ -1,0 +1,5 @@
+name : my curve
+desc : i created a new curve and i chose its params to make it secure but i think i missed something ....
+
+
+

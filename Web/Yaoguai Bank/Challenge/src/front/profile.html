@@ -1,0 +1,467 @@
+<html>
+  <style>
+    /* General Body Style */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Main Container Style */
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 800px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-info p, .sub-users p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #555;
+  word-wrap: break-word; /* Prevent overflow for long words */
+}
+
+.profile-info .highlight {
+  font-weight: bold;
+}
+
+/* Button Styles */
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Add some margin for the Change Password button */
+.change-password-btn {
+  background-color: #ff9800;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.change-password-btn:hover {
+  background-color: #e68900;
+}
+
+.add-subuser-btn {
+  background-color: #2196F3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+.add-subuser-btn:hover {
+  background-color: #1976D2;
+}
+
+/* Hide sub-user section for non-Premium users */
+.premium-feature {
+  display: none;
+}
+
+/* Table Container Scroll */
+.table-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 200px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  margin-top: 10px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e6f7ff;
+}
+
+/* Optional Scrollbar Styling */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+  </style>
+
+  <body>
+    <div class="container">
+      <div class="profile-header">
+        <h2>Profile Overview</h2>
+        <button class="button" id="editProfileBtn" onclick="alert('Will Be Added Soon')">Edit Profile</button>
+      </div>
+      <div class="premium-message" style="text-align: center; margin-top: 20px; font-size: 18px; color: #4CAF50;">
+        Get more than $10,000,000 to become Premium!
+      </div>
+      
+      <div class="profile-info">
+        <p><span class="highlight">Name:</span> <span id="userName">Loading...</span></p>
+        <p><span class="highlight">Email:</span> <span id="userEmail">Loading...</span></p>
+        <p><span class="highlight">Account Number:</span> <span id="accountNumber">Loading...</span></p>
+        <p><span class="highlight">Balance:</span> <span id="balance">Loading...</span></p>
+        <p><span class="highlight">Account Type:</span> <span id="accountType">Loading...</span></p>
+      </div>
+
+      
+      <div class="profile-actions">
+        <button class="button" onclick="window.location.href = 'transfer.html';">Transfer</button>
+        <button class="button" onclick="window.location.href = 'withdraw.html';">Withdraw</button>
+        <button class="button" onclick="window.location.href = 'deposit.html';">Deposit</button>
+      </div>
+
+      <button class="logout-button" id="logoutBtn">Log Out</button>
+
+      <div class="sub-users premium-feature">
+        <h3>Sub Users</h3>
+        <button class="add-subuser-btn" id="addSubUserBtn">Add Sub-User</button>
+        <div class="table-container">
+          <table id="subUsersTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="subUsersList">
+              <!-- Sub Users will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="transaction-history">
+        <h3>Transaction History</h3>
+        <div class="table-container">
+          <table id="transactionTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>From Account</th>
+                <th>To Account</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="transactionList">
+              <!-- Transactions will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="error-message" id="errorMessage" style="display:none;"></div>
+    </div>
+
+    <script>
+      // Fetch profile data from the API endpoint
+      async function fetchProfileData() {
+        try {
+          const response = await fetch('../api/profile.php');
+          let data;
+          if (response.ok) {
+            data = await response.json();
+          } else {
+
+            const text = await response.text();
+            if (text === "Forbidden")
+            {
+              alert("You Have To Login First!");
+              window.location.href = 'login.html';
+            }
+        }
+          
+    
+          // Populate profile info
+          document.getElementById('userName').textContent = data.Name;
+          document.getElementById('userEmail').textContent = data.email;
+          document.getElementById('accountNumber').textContent = data.AccountNumber;
+          document.getElementById('balance').textContent = `$${data.Balance.toLocaleString()}`;
+          document.getElementById('accountType').textContent = data.isPermium === 1 ? 'Premium' : 'Standard';
+          
+          // Check if the user is Premium and show sub-user section
+          if (data.isPermium === 1) {
+            document.querySelector('.premium-feature').style.display = 'block'; // Show premium features
+          }
+
+          if(data.OwnerId){
+            document.getElementById('accountType').textContent = `SubUser, OwnedId: ${data.OwnerId}`
+            document.querySelector('.transaction-history').style.display = 'none';
+            document.querySelector('.table-container').style.display = 'none';
+            document.querySelector('.sub-users').style.display = 'none';
+            document.querySelector('.add-subuser-btn').style.display = 'none';
+          }
+    
+          // Populate sub-users
+          const subUsersList = document.getElementById('subUsersList');
+          if(data.Users !== null){
+          data.Users.forEach(user => {
+            const row = subUsersList.insertRow();
+            row.insertCell(0).textContent = user.Name;
+            row.insertCell(1).textContent = user.Email;
+    
+            const actionCell = row.insertCell(2);
+            const changePasswordBtn = document.createElement('button');
+            changePasswordBtn.className = 'change-password-btn';
+            changePasswordBtn.textContent = 'Change Password';
+            changePasswordBtn.onclick = function() {
+              const newPassword = prompt(`Enter a new password for ${user.Name}:`);
+              if (newPassword && newPassword.trim() !== '') {
+                changeUserPassword(user.Id, newPassword);
+              } else {
+                alert('Password cannot be empty!');
+              }
+            };
+            actionCell.appendChild(changePasswordBtn);
+    
+            const editNameBtn = document.createElement('button');
+            editNameBtn.className = 'button';
+            editNameBtn.textContent = 'Edit Name';
+            editNameBtn.onclick = function() {
+              const newName = prompt(`Enter a new name for ${user.Name}:`);
+              if (newName && newName.trim() !== '') {
+                editSubUserName(user.Id, newName);
+              } else {
+                alert('Name cannot be empty!');
+              }
+            };
+            actionCell.appendChild(editNameBtn);
+          });
+        }
+    
+          // Populate transaction history
+          const transactionList = document.getElementById('transactionList');
+          if(data.Histoy!== null){
+          data.Histoy.forEach(transaction => {
+            const row = transactionList.insertRow();
+            row.insertCell(0).textContent = transaction.Date;
+            row.insertCell(1).textContent = transaction.FromAcc;
+            row.insertCell(2).textContent = transaction.ToAcc;
+            row.insertCell(3).textContent = `$${transaction.Amount}`;
+          });
+        }
+        } catch (error) {
+          document.getElementById('errorMessage').style.display = 'block';
+          document.getElementById('errorMessage').textContent = 'Error loading profile data.';
+        }
+      }
+
+      async function changeUserPassword(id, newPassword) {
+    try {
+        const response = await fetch('../api/changeuserpassword.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                newPassword: newPassword,
+            }),
+        });
+
+        // Check if the response status is 200 (OK)
+        if (response.status === 200) {
+            const result = await response.json();
+            if (result.success) {
+                alert('Password updated successfully!');
+                location.reload(); // Refresh the page after success
+            } else {
+                alert('Error updating password. Please try again.');
+            }
+        } else {
+            alert('Failed to update password. Server returned an error.');
+        }
+    } catch (error) {
+        alert('Done, Reload the page!');
+    }
+}
+
+
+
+async function editSubUserName(id, newName) {
+    try {
+        const response = await fetch('../api/EditSubUser.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                newName: newName,
+            }),
+        });
+
+        // Check if the response status is 200 (OK)
+        if (response.status === 200) {
+            const result = await response.json();
+            if (result.success) {
+                alert('Sub-user name updated successfully!');
+                location.reload(); // Refresh the page after success
+            } else {
+                alert('Error updating sub-user name. Please try again.');
+            }
+        } else {
+            alert('Failed to update sub-user name. Server returned an error.');
+        }
+    } catch (error) {
+        alert('Done, Reload the page!');
+    }
+}
+
+
+async function addSubUser() {
+    const name = prompt('Enter sub-user name:');
+    const email = prompt('Enter sub-user email:');
+    const password = prompt('Enter sub-user password:');
+
+    if (name && email && password) {
+        try {
+            const response = await fetch('../api/createSubUser.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            // Check if the response status is 200 (OK)
+            if (response.status === 200) {
+                const result = await response.json();
+                if (result.success) {
+                    alert('Sub-user added successfully!');
+                    location.reload(); // Refresh the page after success
+                } else {
+                    alert('Error adding sub-user. Please try again.');
+                }
+            } else {
+                alert('Failed to add sub-user. Server returned an error.');
+            }
+        } catch (error) {
+            alert('Done, Reload the page!');
+        }
+    } else {
+        alert('All fields are required!');
+    }
+}
+
+      // Log out function
+      async function logout() {
+        try {
+          const response = await fetch('../api/logout.php', {
+            method: 'POST',
+          });
+
+          if (response.ok) {
+            alert('Logged out successfully');
+            window.location.href = 'login.html'; // Redirect to login page after logout
+          } else {
+            alert('Error logging out. Please try again.');
+          }
+        } catch (error) {
+          alert('An error occurred. Please try again.');
+        }
+      }
+
+      // Add event listener to the Log Out button
+      document.getElementById('logoutBtn').addEventListener('click', logout);
+      document.getElementById('addSubUserBtn').addEventListener('click', addSubUser);
+      // Call the function to fetch profile data when the page loads
+      fetchProfileData();
+    </script>
+  </body>
+</html>

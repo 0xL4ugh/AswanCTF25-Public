@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    #errorMessage {
+      margin-top: 20px;
+      color: red;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Transfer</h2>
+    <form id="transferForm">
+      <div class="form-group">
+        <label for="to_account">To Account Number:</label>
+        <select id="to_account" name="to_account" required>
+          <option value="">Select Account</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+      </div>
+      <div class="form-group">
+        <label for="reference_number">Reference Number:</label>
+        <input type="text" id="reference_number" name="reference_number" required>
+      </div>
+      <input type="submit" value="Transfer">
+    </form>
+    <div id="errorMessage"></div>
+  </div>
+
+  <script>
+    fetch('../api/accounts.php')
+      .then(response => response.json())
+      .then(accounts => {
+        const toAccountSelect = document.getElementById('to_account');
+        accounts.forEach(account => {
+          const option = document.createElement('option');
+          option.value = account.AccountNumber; // Assuming 'account_number' is the key in the response
+          option.textContent = account.AccountNumber; // Display account number
+          toAccountSelect.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching account numbers:', error);
+        document.getElementById('errorMessage').textContent = 'Error fetching account numbers.';
+        alert("You Have To Login First!");
+        window.location.href= 'login.html';
+      });
+
+    document.getElementById('transferForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const to_account = document.getElementById('to_account').value;
+      const amount = document.getElementById('amount').value;
+      const reference_number = document.getElementById('reference_number').value;
+
+      // Check if the account is selected
+      if (!to_account) {
+        document.getElementById('errorMessage').textContent = 'Please select a valid account number.';
+        return;
+      }
+
+      const data = { to_account, amount, reference_number };
+
+      fetch('../api/transfer.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          document.getElementById('errorMessage').style.color = 'green';
+          document.getElementById('errorMessage').textContent = 'Transfer successful!, Redirect in 2 Seconds.';
+          setTimeout(() => {
+        window.location.href = 'profile.html';
+      }, 2000);
+        } else {
+          document.getElementById('errorMessage').style.color = 'red';
+          document.getElementById('errorMessage').textContent = 'Error: ' + data.Msg;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('errorMessage').textContent = 'Error: ' + error;
+      });
+    });
+  </script>
+</body>
+</html>

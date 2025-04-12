@@ -1,0 +1,4 @@
+name: Y40Inc1d3n7_3xf1l7r4710n
+author: 0xS1rx58
+flag: YAO{DB$_3xf1l7r4710_DEt3ct3D...!}
+description: "After establishing persistence, the attacker managed to exfiltrate\nsensitive data from the database. Your job is to identify what data was\naccessed, how it was retrieved, and whether any signs of data."

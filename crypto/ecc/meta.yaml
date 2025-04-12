@@ -1,0 +1,6 @@
+name: my curve
+author: bebo
+flag: FLAG{bad_order_make_it_easy}
+description: "i created a new curve and i chose its params to make it secure but i think i missed something ...."
+
+

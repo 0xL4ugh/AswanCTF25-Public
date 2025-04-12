@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+    h2 {
+      font-size: 24px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    label {
+      text-align: left;
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .error-message {
+      color: red;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Login to Yaobank</h2>
+  <form id="loginForm">
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <input type="submit" value="Login">
+    </div>
+  </form>
+  <div id="errorMessage" class="error-message"></div>
+
+  <div class="footer">
+    <p>&copy; 2025 Yaobank</p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Get the form data
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Create a JSON object
+    const data = {
+      email: email,
+      password: password
+    };
+
+    // Send a POST request with the JSON data
+    fetch('../api/login.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('Login successful');
+        document.getElementById('errorMessage').textContent = 'Login successful';
+        
+        // Redirect to profile page on successful login
+        window.location.href = 'profile.html'; // Redirect to profile.html
+      } else {
+        response.json().then(errorData => {
+          const errorMessage = errorData.Msg;
+          console.error('Login failed: ' + errorMessage);
+          
+          document.getElementById('errorMessage').textContent = 'Login failed: ' + errorMessage;
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('errorMessage').textContent = 'Login failed';
+    });
+  });
+</script>
+
+</body>
+</html>

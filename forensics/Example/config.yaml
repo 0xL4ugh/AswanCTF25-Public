@@ -1,0 +1,13 @@
+intro: "Hello DFIR Guru, Can u Figure out What is going on"
+outro: "Nice Job! Thanks For being A great Forensicator"
+questions:
+  1:
+      question: "What is the SHA1 hash of the malicious APK file?"
+      answer:
+        - "a192df3e1ee4f74d4078180a465ebc157bbd886b"
+  2:
+      question: "What type of attack did the victim fall for?"
+      answer:
+        - "Phishing"
+
+flag: "Flag{.*}"

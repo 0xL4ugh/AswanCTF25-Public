@@ -1,0 +1,4 @@
+name: CTR
+author: bebo
+flag: YAO{CTR_with_same_iv_is_bad}
+description: do u know ctr i think i made it wrong can u prove it

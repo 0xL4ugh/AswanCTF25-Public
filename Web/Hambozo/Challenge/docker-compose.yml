@@ -1,0 +1,23 @@
+services:
+  hambozo:
+    build: hambozo
+    image: yao:hambozo
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent http://127.0.0.1:5000"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    cpus: "1"
+    mem_limit: "2048M"
+  nginx-proxy:
+    build: nginx-proxy
+    image: yao:nginx-proxy
+    ports:
+      - 81:80
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent http://127.0.0.1:80"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    cpus: "1"
+    mem_limit: "2048M"

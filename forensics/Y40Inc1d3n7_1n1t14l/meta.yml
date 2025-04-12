@@ -1,0 +1,4 @@
+name: Y40Inc1d3n7_1n1t14l
+author: 0xS1rx58
+flag: YAO{1n1ti4l_$$H_C0MpR0M15e_N0t_W3b_3Xpl01t}
+description: "One of YAO's production servers was recently compromised. The Incident\nResponse (IR) team detected suspicious traffic and HTTP requests from\nmultiple IPs, indicating a possible exploitation of a vulnerable web\nservice. So far, the exact source of the attack remains unknown.\nYour task is to act as a digital forensic analyst. Using the provided logs\nand data, analyze the evidence to identify the attack vector, determine\nwhat was accessed or modified, and uncover any traces left by the attacker.\nDownload Link: https://mega.nz/file/FWFVVJCD#zPJXtspp5Ax7fOaK8pssN7bQLI_3CTi5fl0Qdefh4Do"
